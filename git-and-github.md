@@ -48,7 +48,7 @@ and metadata:
 
 ### Commit object
 
-a commit points to:
+a **commit** points to:
 
 - a tree
 
@@ -67,10 +67,10 @@ the SHA1 of the commit is the hash of all this information
 > - *Tree "Snapshot of  the repository". Points at files  and directories.*
 > - *A commit is a  code snapshot*
 
-### Why can’t we "change" commits?
+### Why can't we "change" commits?
 
 - If you change any data about the commit, the commit will have a new SHA1 hash.
-- Even if the files don’t change, the created date will.
+- Even if the files don't change, the created date will.
 
 ### References - Pointers to commits
 
@@ -84,10 +84,44 @@ the SHA1 of the commit is the hash of all this information
 > - */refs/heads/master contains which commit the branch points to*
 > - *HEAD is usually a pointer to the current branch*
 
+### What's a branch?
+
+- A branch is just a pointer to a particular commit.
+- The pointer of the current branch changes as new commits are made. 
+
+### What is head?
+
+- **HEAD** is how git knows what branch you're currently on, and what the next parent will be.
+- It's a pointer.
+  - It usually points at the ***name*** of the current branch.
+  - But, it can point at a commit too (detached HEAD).
+- It moves when:
+  - You make a commit in the currently active branch
+  - When you checkout a new branch
+
+### Lightweight tags
+
+- Lightweight tags are just a simple pointer to a commit.
+- When you create a tag with no arguments, it captures the value in HEAD
+
+### Annotated tags: git tag -a
+
+> Point to a commit, but store additional information.
+
+- Author, message, date.
+
+### Tags & branches
+
+- Branch
+  - The current branch pointer moves with every commit to the repository 
+- Tag
+  - The commit that a tag points doesn't change.
+  - It's a snapshot!
+
 ### The working area
 
 - The files in your working area that are also not in the staging are are not handled by git.
-- Also called **untracked** files
+- Also called **untracked files**
 
 ### The staging area (a.k.a index, cache)
 
@@ -96,13 +130,13 @@ the SHA1 of the commit is the hash of all this information
 
 > **NB:**
 >
-> - *a "clean" staging area isn’t empty!*
+> - *a "clean" staging area isn't empty!*
 >- *Consider the baseline staging area as being an exact copy of the latest commit.*
 
 ### "unstage" files from the staging area
 
 - Not removing the files.
-- You’re replacing them with a copy that’s currently in the repository.
+- You're replacing them with a copy that's currently in the repository.
 
 ### Git stash
 
@@ -113,6 +147,27 @@ the SHA1 of the commit is the hash of all this information
 
 - The files git knows about!
 - Contains all of your commits
+
+### Head-less / detached head
+
+- Sometimes you need to checkout a specific commit (or tag) instead of a branch.
+- git moves the HEAD pointer to that commit
+- as soon as you checkout a different branch or commit, the value of HEAD will point to the new SHA
+- There is no reference pointing to the commits you made in a detached state.
+
+> Save your work:
+
+- Create a new branch that points to the last commit you made in a detached state.
+  - `git branch <new-branch-name> <commit>`
+- Why the last commit?
+  - Because the other commits point to their parents.
+
+### Dangling commits
+
+> Discard your work:
+
+- If you don't point a new branch at those commits, they will no longer be referenced in git. (dangling commits)
+- Eventually, they will be garbage collected.
 
 ### Less
 
@@ -138,7 +193,7 @@ the SHA1 of the commit is the hash of all this information
 - `git cat-file -t` (type) and `-p` (print the contents)
 - `git --no-pager log --oneline`: display the log in the same screen
 - `git branch a_new_branch`: create a new branch without switching to it
-- `git ls-files -s`: show you what’s in the staging area
+- `git ls-files -s`: show you what's in the staging area
 - `git add <file>`
 - `git rm <file>`
 - `git mv <file>`
@@ -153,11 +208,17 @@ the SHA1 of the commit is the hash of all this information
 - `git stash -p`: selectively stash changes
 - `git stash branch <optional branch name>`: start a new branch from a stash
 - `git checkout <stash name> -- <filename>`: grab a single file from a stash
-- `git stash pop`: remove the last stash and applying changes (**NB**: *doesn’t remove if there’s a merge conflict*)
+- `git stash pop`: remove the last stash and applying changes (**NB**: *doesn't remove if there's a merge conflict*)
 - `git stash drop`: remove the last stash
 - `git stash drop stash@{n}`
 - `git stash clear`: remove all stashes
+- `git tag`: list all the tags in a repo
+- `git show-ref --tags`: list all tags, and what commit they're pointing to
+- `git show-ref --heads`: list all heads, and what commit they're pointing to
+- `git tag --points-at <commit>`: list all the tags pointing at a commit
+- `git show <tag-name>`: looking at the tag, or tagged contents: ➤
 
 ## References
 
 - <https://github.com/nnja/advanced-git>
+- <https://product.hubspot.com/blog/git-and-github-tutorial-for-beginners>
