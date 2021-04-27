@@ -4,7 +4,7 @@ A quick aside: git and GitHub are not the same thing. Git is an open-source, ver
 
 ## Jargon
 
-*content addressable storage system, packfiles, deltas, working area/working tree, staging area/cache/index*
+*content addressable storage system, packfiles, deltas, working area/working tree, staging area/cache/index, git rerere*
 
 ## Git
 
@@ -169,6 +169,32 @@ the SHA1 of the commit is the hash of all this information
 - If you don't point a new branch at those commits, they will no longer be referenced in git. (dangling commits)
 - Eventually, they will be garbage collected.
 
+### Merging
+
+- Under the hood - merge commits are just commits
+- Fast forward: fast-forward happens when there are no commits on the base branch that occurred after the feature branch was created.
+
+### git merge --no-ff (no fast forward)
+
+- To retain the history of a merge commit, even if there are no changes to the base branch
+- This will *force* a merge commit, even when one isn't necessary.
+
+### Git log: referencing commits
+^ or ^**n**
+- no args: ==^1: the first parent commit
+- **n**: the n^th parent commit
+~ **or** ~**n**
+- no args: == ~1: the first commit back, **following 1st parent**
+- **n**: number of commits back, ***following only 1st parent***
+> **NB**: ^ and ~ can be combined
+
+### Diff
+
+- Diff shows you changes:
+  - between commits
+  - between the staging area and the repository
+  - what’s in the working area
+
 ### Less
 
 > Tips for using `less` on the command line.
@@ -190,8 +216,9 @@ the SHA1 of the commit is the hash of all this information
 
 ### Git commands
 
-- `git cat-file -t` (type) and `-p` (print the contents)
-- `git --no-pager log --oneline`: display the log in the same screen
+- `git cat-file -t` (*type*) and `-p` (*print the contents*)
+- **`git --no-pager log --oneline`**: display the log in the same screen
+- **`git --no-pager log --graph --oneline`**
 - `git branch a_new_branch`: create a new branch without switching to it
 - `git ls-files -s`: show you what's in the staging area
 - `git add <file>`
@@ -216,7 +243,21 @@ the SHA1 of the commit is the hash of all this information
 - `git show-ref --tags`: list all tags, and what commit they're pointing to
 - `git show-ref --heads`: list all heads, and what commit they're pointing to
 - `git tag --points-at <commit>`: list all the tags pointing at a commit
-- `git show <tag-name>`: looking at the tag, or tagged contents: ➤
+- `git show <tag-name>`: looking at the tag, or tagged contents
+- `git merge --no-ff`
+- **`git checkout -`**: switch to the previous branch that you were just on
+- `git log --since="yesterday"`
+- `git log --since="2 weeks ago"`
+- `git log --name-status --follow -- <file>`: log files that have been moved or renamed
+- `git log --grep=Git --author=Cuong --since=2.weeks`: search for commit messages that match a regular expression (*can be mixed & matched with other git flags*)
+- `git log --diff-filter=M --stat`: selectively include or exclude files that have been ((A)dded, (D)eleted, (M)odified, (R)enamed & more...)
+- `git show <commit>`
+- `git show <commit> --stat`: show files changed in commit
+- `git show <commit>:<file>`: look at a file from another commit
+- `git diff`: unstaged changes
+- `git diff --staged`: staged changes
+- `git branch --merged master`: which branches are merged with master, and can be cleaned up?
+- `git branch --no-merged master`: which branches aren’t merged with master yet?
 
 ## References
 
