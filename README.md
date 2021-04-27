@@ -1,3 +1,3 @@
 # Knowlegde Areas
 
-- [Git and Github] (/git-and-github.md)
+- [Git and Github] (git-and-github.md)
